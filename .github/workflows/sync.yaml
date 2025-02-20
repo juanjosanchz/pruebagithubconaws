@@ -1,28 +1,20 @@
-name: S3 sync action
-
+name: deployar
 on:
-  workflow_dispatch:
   push:
     branches:
-      - main
-
-permissions:
-  id-token: write
-  contents: read
+      - main # coincicir con las ramas
+env:
+  AWS_ROLE: arn:aws:iam::975502669391:role/integracion-aws-con-github
 
 jobs:
-  sync:
+  an-example-job:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-
-      - name: Connect to AWS
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Configure AWS credentials from OIDC
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-session-name: awssyncsession
-          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: sync bucket
-        run: aws s3 sync ./files/ s3://${{ secrets.AWS_BUCKET_NAME }} --delete
+          role-to-assume: ${{ env.AWS_ROLE }}
+          aws_region: us-east-1
