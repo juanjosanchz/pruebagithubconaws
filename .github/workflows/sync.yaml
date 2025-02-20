@@ -17,4 +17,4 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.AWS_ROLE }}
-          aws_region: us-east-1
+          aws-region: us-east-1
